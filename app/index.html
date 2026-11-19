@@ -1,23 +1,115 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cover Snap</title>
-<link rel="stylesheet" href="./style.css">
+<title>Sunset Poster — Cover Art Maker</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="app">
-  <section class="controls">
-    <h1>Cover Snap</h1>
-    <p>A photo and a caption, made into a square cover.</p>
-    <label>Photo <input id="photo" type="file" accept="image/*"></label>
-    <label>Caption <input id="caption" type="text" maxlength="40" value="Sunset Heist"></label>
-    <button id="export" type="button">Export PNG 1080 x 1080</button>
-    <p id="status" role="status"></p>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">☀</span>
+    <div>
+      <h1>Sunset Poster</h1>
+      <p>Turn your photos into bold multi-panel cover art</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <label class="btn btn-ghost" for="photoInput">＋ Add photos</label>
+    <input id="photoInput" type="file" accept="image/*" multiple hidden>
+    <button id="exportBtn" class="btn btn-primary" type="button">Export PNG ↓</button>
+  </div>
+</header>
+
+<main class="workspace">
+  <section class="stage-col">
+    <div id="dropZone" class="dropzone">
+      <canvas id="previewCanvas" width="1080" height="1080"></canvas>
+      <p class="drop-hint">Drop photos here, or click “Add photos” — drag a panel to move its photo</p>
+    </div>
+    <div class="size-row" role="group" aria-label="Export size">
+      <span class="row-label">Export size</span>
+      <button class="chip size-chip is-active" type="button" data-size="1080x1080">1080 × 1080 · Square</button>
+      <button class="chip size-chip" type="button" data-size="1080x1350">1080 × 1350 · Portrait</button>
+      <button class="chip size-chip" type="button" data-size="1920x1080">1920 × 1080 · Wide</button>
+    </div>
   </section>
-  <canvas id="cover" width="1080" height="1080" aria-label="The cover"></canvas>
+
+  <aside class="controls">
+    <section class="panel-block">
+      <h2>1 · Layout</h2>
+      <div class="layout-grid" id="layoutGrid">
+        <button class="layout-btn is-active" type="button" data-layout="hero">
+          <span class="layout-thumb layout-hero"></span>Hero + 2
+        </button>
+        <button class="layout-btn" type="button" data-layout="quad">
+          <span class="layout-thumb layout-quad"></span>Four panels
+        </button>
+        <button class="layout-btn" type="button" data-layout="strip">
+          <span class="layout-thumb layout-strip"></span>Side strip
+        </button>
+        <button class="layout-btn" type="button" data-layout="trio">
+          <span class="layout-thumb layout-trio"></span>Triple row
+        </button>
+      </div>
+      <button id="fillAllBtn" class="btn btn-ghost btn-wide" type="button">Fill every panel with one photo</button>
+    </section>
+
+    <section class="panel-block">
+      <h2>2 · Panels &amp; photos</h2>
+      <p class="hint">Click a panel on the preview to select it, then drag to move the photo or use the zoom slider.</p>
+      <div id="panelList" class="panel-list"></div>
+      <div class="photo-strip" id="photoStrip"></div>
+    </section>
+
+    <section class="panel-block">
+      <h2>3 · Caption</h2>
+      <label class="field-label" for="captionInput">Main caption</label>
+      <input id="captionInput" class="text-input" type="text" value="GOLDEN HOUR" maxlength="28" autocomplete="off">
+      <label class="field-label" for="subtitleInput">Subtitle</label>
+      <input id="subtitleInput" class="text-input" type="text" value="MY STORY · SUMMER 2026" maxlength="48" autocomplete="off">
+      <div class="caption-row">
+        <div>
+          <label class="field-label" for="captionColor">Lettering</label>
+          <select id="captionColor" class="select-input">
+            <option value="sunset">Sunset gold</option>
+            <option value="white">White hot</option>
+            <option value="neon">Neon pink</option>
+            <option value="aqua">Neon aqua</option>
+          </select>
+        </div>
+        <div>
+          <label class="field-label" for="captionPlace">Position</label>
+          <select id="captionPlace" class="select-input">
+            <option value="bottom">Bottom</option>
+            <option value="top">Top</option>
+          </select>
+        </div>
+      </div>
+      <label class="field-label" for="gradeRange">Sunset grade</label>
+      <input id="gradeRange" type="range" min="0" max="100" value="70">
+      <label class="field-label" for="grainRange">Grain</label>
+      <input id="grainRange" type="range" min="0" max="100" value="25">
+    </section>
+
+    <section class="panel-block">
+      <h2>4 · Export</h2>
+      <p class="hint">Exports a PNG at the size above — square, portrait or wide — ready to post.</p>
+      <button id="exportBtn2" class="btn btn-primary btn-wide" type="button">Export PNG ↓</button>
+      <p id="exportStatus" class="status-line" role="status"></p>
+    </section>
+  </aside>
 </main>
-<script type="module" src="./src/main.js"></script>
+
+<footer class="foot">
+  <p>Your photos never leave this device — everything is drawn locally in your browser. Original design, system fonts only, no game artwork or logos.</p>
+</footer>
+
+<script src="src/panels.js"></script>
+<script src="src/caption.js"></script>
+<script src="src/cover.js"></script>
+<script src="src/export.js"></script>
+<script src="src/main.js"></script>
 </body>
 </html>
